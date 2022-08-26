@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.otakenne.devicehealthsdk">
+
+    <application>
+        <activity
+            android:name="com.otakenne.devicehealthsdk.ui.activities.DeviceHealthActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

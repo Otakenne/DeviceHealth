@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="battery_health_threshold_default">50</integer>
+    <integer name="global_ram_usage_threshold_default">50</integer>
+    <integer name="system_cpu_load_threshold_default">50</integer>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="battery_health_threshold_settings">battery_health_threshold_settings</string>
+    <string name="global_ram_usage_threshold_settings">global_ram_usage_threshold_settings</string>
+    <string name="system_cpu_load_threshold_settings">system_cpu_load_threshold_settings</string>
+    <string name="should_show_reverse_notification_settings">should_show_reverse_notification_settings</string>
+    <string name="battery_is_above_threshold">battery_is_above_threshold</string>
+    <string name="global_ram_is_above_threshold">global_ram_is_above_threshold</string>
+    <string name="system_cpu_load_is_above_threshold">system_cpu_load_is_above_threshold</string>
+    <string name="battery_health_error_message">Something went wrong with battery health poll</string>
+</resources>
