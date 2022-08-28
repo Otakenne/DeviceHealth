@@ -2,17 +2,18 @@ package com.otakenne.devicehealthsdk.data.datasources.mock
 
 import com.otakenne.devicehealthsdk.data.datasources.IBatteryHealthDataSource
 import com.otakenne.devicehealthsdk.data.utility.Result
+import com.otakenne.devicehealthsdk.utility.Constants
 
 internal class BatteryHealthDataSourceMock(
-    private val shouldFail: Boolean
+    private val shouldNotFail: Boolean
 ): IBatteryHealthDataSource {
     override fun getBatteryHealth(): Result<Int> {
-        return when (shouldFail) {
+        return when (shouldNotFail) {
             true ->  {
-                val batteryHealth = 40
+                val batteryHealth = Constants.BATTERY_HEALTH
                 Result.Success(batteryHealth)
             }
-            false -> Result.Error(Throwable("Failed to get battery health"))
+            false -> Result.Error(Throwable(Constants.BATTERY_HEALTH_ERROR_MESSAGE))
         }
     }
 }

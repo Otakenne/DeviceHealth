@@ -4,6 +4,7 @@ buildscript {
         compose_version = '1.2.1'
         room_version = '2.4.3'
         koin_version = '3.1.5'
+        lifecycle_version = '2.4.0'
     }
     dependencies {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.43'

@@ -35,7 +35,7 @@ internal class DeviceHealthMetricsViewModel (
         pollJob = startPollJob()
     }
 
-    private fun getBatteryHealth() {
+    fun getBatteryHealth() {
         when (val batteryHealth = batteryHealthRepository.getBatteryHealth()) {
             is Result.Success ->  _uiState.value = _uiState.value.copy(
                 batteryHealth = batteryHealth.content,
@@ -48,7 +48,7 @@ internal class DeviceHealthMetricsViewModel (
         }
     }
 
-    private fun getGlobalRamUsage() {
+    fun getGlobalRamUsage() {
         when (val globalRamUsage = globalRamUsageRepository.getGlobalRamUsage()) {
             is Result.Success -> _uiState.value = _uiState.value.copy(
                 globalRamUsage = globalRamUsage.content,
@@ -61,7 +61,7 @@ internal class DeviceHealthMetricsViewModel (
         }
     }
 
-    private fun getSystemCPULoad() {
+    fun getSystemCPULoad() {
         when (val systemCPULoad = systemCPULoadRepository.getSystemCPULoad()) {
             is Result.Success -> _uiState.value = _uiState.value.copy(
                 systemCPULoad = systemCPULoad.content,
@@ -80,16 +80,16 @@ internal class DeviceHealthMetricsViewModel (
         getSystemCPULoad()
     }
 
-    private suspend fun checkForBatteryAlerts(batteryHealthThresHold: Int) {
-        if (_uiState.value.batteryHealth > batteryHealthThresHold) {
+    suspend fun checkForBatteryAlerts(batteryHealthThreshold: Int) {
+        if (_uiState.value.batteryHealth > batteryHealthThreshold) {
             if (!trackMetricToThresholdPositionRepository.getBatteryIsAboveThreshold()) {
                 val alert = HistoricalAlert(
                     time = now(),
                     historicalAlertType = HistoricalAlert.HistoricalAlertType.BATTERY.name,
-                    threshold = batteryHealthThresHold,
+                    threshold = batteryHealthThreshold,
                     value = _uiState.value.batteryHealth
                 )
-                _notificationState.value = alert
+                _notificationState.value  = alert
                 cacheRepository.insertHistoricalAlert(alert)
             }
             trackMetricToThresholdPositionRepository.setBatteryIsAboveThreshold(true)
@@ -98,7 +98,7 @@ internal class DeviceHealthMetricsViewModel (
                 val alert = HistoricalAlert(
                     time = now(),
                     historicalAlertType = HistoricalAlert.HistoricalAlertType.BATTERY.name,
-                    threshold = batteryHealthThresHold,
+                    threshold = batteryHealthThreshold,
                     value = _uiState.value.batteryHealth
                 )
                 _notificationState.value = alert
@@ -107,9 +107,9 @@ internal class DeviceHealthMetricsViewModel (
         }
     }
 
-    private suspend fun checkForGlobalRamAlerts(globalRamUsageThreshold: Int) {
+    suspend fun checkForGlobalRamAlerts(globalRamUsageThreshold: Int) {
         if (_uiState.value.globalRamUsage > globalRamUsageThreshold) {
-            if (trackMetricToThresholdPositionRepository.getGlobalRamIsAboveThreshold()) {
+            if (!trackMetricToThresholdPositionRepository.getGlobalRamIsAboveThreshold()) {
                 val alert = HistoricalAlert(
                     time = now(),
                     historicalAlertType = HistoricalAlert.HistoricalAlertType.RAM.name,
@@ -134,9 +134,9 @@ internal class DeviceHealthMetricsViewModel (
         }
     }
 
-    private suspend fun checkForSystemCPULoadAlerts(systemCPULoadThreshold: Int) {
+    suspend fun checkForSystemCPULoadAlerts(systemCPULoadThreshold: Int) {
         if (_uiState.value.systemCPULoad > systemCPULoadThreshold) {
-            if (trackMetricToThresholdPositionRepository.getSystemCPULoadIsAboveThreshold()) {
+            if (!trackMetricToThresholdPositionRepository.getSystemCPULoadIsAboveThreshold()) {
                 val alert = HistoricalAlert(
                     time = now(),
                     historicalAlertType = HistoricalAlert.HistoricalAlertType.CPU.name,
@@ -171,7 +171,7 @@ internal class DeviceHealthMetricsViewModel (
         checkForSystemCPULoadAlerts(systemCPULoadThreshHold)
     }
 
-    private fun getShouldShowReverseNotifications() {
+    fun getShouldShowReverseNotifications() {
         _uiState.value = _uiState.value.copy(
             shouldShowReverseNotification = cacheRepository.getShouldShowReverseNotification()
         )
@@ -186,6 +186,10 @@ internal class DeviceHealthMetricsViewModel (
                 delay(timeInterval)
             }
         }
+    }
+
+    fun tearDown() {
+        pollJob.cancel()
     }
 
     override fun onCleared() {

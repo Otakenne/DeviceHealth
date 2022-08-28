@@ -2,14 +2,15 @@ package com.otakenne.devicehealthsdk.data.repositories.mock
 
 import com.otakenne.devicehealthsdk.data.models.HistoricalAlert
 import com.otakenne.devicehealthsdk.data.repositories.ICacheRepository
+import com.otakenne.devicehealthsdk.utility.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 internal class CacheRepositoryMock: ICacheRepository {
 
-    private var batteryHealthThreshold: Int = 50
-    private var globalRamUsageThreshold: Int = 50
-    private var systemCPULoadThreshold: Int = 50
+    private var batteryHealthThreshold: Int = Constants.DEFAULT_VALUE
+    private var globalRamUsageThreshold: Int = Constants.DEFAULT_VALUE
+    private var systemCPULoadThreshold: Int = Constants.DEFAULT_VALUE
     private var shouldShowReverseNotification: Boolean = false
 
     private var historicalAlertsList: MutableList<HistoricalAlert> = mutableListOf()
@@ -50,15 +51,15 @@ internal class CacheRepositoryMock: ICacheRepository {
     }
 
     override fun resetBatteryHealthThreshold() {
-        batteryHealthThreshold = 50
+        batteryHealthThreshold = Constants.DEFAULT_VALUE
     }
 
     override fun resetSystemCPULoadThreshold() {
-        systemCPULoadThreshold = 50
+        systemCPULoadThreshold = Constants.DEFAULT_VALUE
     }
 
     override fun resetGlobalRamUsageThreshold() {
-        globalRamUsageThreshold = 50
+        globalRamUsageThreshold = Constants.DEFAULT_VALUE
     }
 
     override fun resetShouldShowReverseNotification() {

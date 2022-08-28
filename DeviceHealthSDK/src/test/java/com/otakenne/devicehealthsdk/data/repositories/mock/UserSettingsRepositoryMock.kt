@@ -1,12 +1,13 @@
 package com.otakenne.devicehealthsdk.data.repositories.mock
 
 import com.otakenne.devicehealthsdk.data.repositories.IUserSettingsRepository
+import com.otakenne.devicehealthsdk.utility.Constants
 
 internal class UserSettingsRepositoryMock: IUserSettingsRepository {
 
-    private var batteryHealthThreshold: Int = 50
-    private var globalRamUsageThreshold: Int = 50
-    private var systemCPULoadThreshold: Int = 50
+    private var batteryHealthThreshold: Int = Constants.DEFAULT_VALUE
+    private var globalRamUsageThreshold: Int = Constants.DEFAULT_VALUE
+    private var systemCPULoadThreshold: Int = Constants.DEFAULT_VALUE
     private var shouldShowReverseNotification: Boolean = false
 
     override fun setBatteryHealthThreshold(threshold: Int) {

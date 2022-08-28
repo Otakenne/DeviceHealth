@@ -22,14 +22,23 @@ internal class HistoricalAlertsViewModel (
     }
 
     fun getHistoricalAlerts() {
-        viewModelScope.launch {
-            cacheRepository.getHistoricalAlerts().collect {
-                _uiState.value = _uiState.value.copy(historicalAlerts = it)
+        try {
+            viewModelScope.launch {
+                cacheRepository.getHistoricalAlerts().collect {
+                    _uiState.value = _uiState.value.copy(historicalAlerts = it, initState = InitState.LOADED)
+                }
             }
+        } catch (exception: Exception) {
+            _uiState.value = _uiState.value.copy(historicalAlerts = listOf(), initState = InitState.ERROR)
         }
     }
 
     data class UIState(
-        val historicalAlerts: List<HistoricalAlert> = listOf()
+        val historicalAlerts: List<HistoricalAlert> = listOf(),
+        val initState: InitState = InitState.LOADING
     )
+
+    enum class InitState {
+        LOADING, LOADED, ERROR
+    }
 }

@@ -2,17 +2,18 @@ package com.otakenne.devicehealthsdk.data.datasources.mock
 
 import com.otakenne.devicehealthsdk.data.datasources.ISystemCPULoadDataSource
 import com.otakenne.devicehealthsdk.data.utility.Result
+import com.otakenne.devicehealthsdk.utility.Constants
 
 internal class SystemCPULoadDataSourceMock(
-    private val shouldFail: Boolean
+    private val shouldNotFail: Boolean
 ): ISystemCPULoadDataSource {
     override fun getSystemCPULoadDataSource(): Result<Int> {
-        return when (shouldFail) {
+        return when (shouldNotFail) {
             true ->  {
-                val systemCPULoad = 60
+                val systemCPULoad = Constants.SYSTEM_CPU_LOAD
                 Result.Success(systemCPULoad)
             }
-            false -> Result.Error(Throwable("Failed to get system CPU load"))
+            false -> Result.Error(Throwable(Constants.SYSTEM_CPU_LOAD_ERROR_MESSAGE))
         }
     }
 }

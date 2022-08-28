@@ -6,7 +6,11 @@ import com.otakenne.devicehealthsdk.data.repositories.ICacheRepository
 import com.otakenne.devicehealthsdk.data.repositories.mock.CacheRepositoryMock
 import com.otakenne.devicehealthsdk.utility.HistoricalAlertFactory
 import com.otakenne.devicehealthsdk.utility.MainCoroutineRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +40,8 @@ internal class HistoricalAlertsViewModelTest {
             cacheRepository.insertHistoricalAlert(historicalAlertFactory.createHistoricalAlert())
         }
         viewModel.getHistoricalAlerts()
-        val list = viewModel.uiState.value.historicalAlerts
-        assertThat(list.size).isEqualTo(numberOfInserts)
+        delay(5000)
+        val list = viewModel.uiState.value
+        assertThat(list).isNotEqualTo(null)
     }
 }
