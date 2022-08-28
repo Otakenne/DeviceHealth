@@ -39,39 +39,37 @@ internal class NotificationService(
         notificationManager.notify(2, notification)
     }
 
+    suspend fun sendAlertNotifications(notificationService: NotificationService, viewModel: DeviceHealthMetricsViewModel) {
+        viewModel.notificationState.collectLatest {
+            if (it.historicalAlertType != String.DEFAULT
+                && it.threshold != Int.DEFAULT
+                && it.value != Int.DEFAULT) {
+
+                val notificationTitle: String
+                val notificationText: String
+
+                if (it.value > it.threshold) {
+                    notificationTitle = context.getString(R.string.threshold_alert)
+                    notificationText = context.getString(R.string.notification_text_for_above_threshold, it.historicalAlertType)
+                    notificationService.showThresholdAlertNotification(notificationTitle, notificationText)
+                } else {
+                    notificationTitle = context.getString(R.string.back_to_normal)
+                    notificationText = context.getString(R.string.notification_text_for_below_threshold, it.historicalAlertType)
+                    if (viewModel.uiState.value.shouldShowReverseNotification) {
+                        notificationService.showNormalAlertNotification(
+                            notificationTitle,
+                            notificationText
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
         const val THRESHOLD_ABOVE_ALERT_CHANNEL_ID = "threshold_above_alert_channel"
         const val THRESHOLD_ABOVE_ALERT_CHANNEL_NAME = "Threshold Above Channel"
         const val THRESHOLD_BELOW_ALERT_CHANNEL_ID = "threshold_below_alert_channel"
         const val THRESHOLD_BELOW_ALERT_CHANNEL_NAME = "Threshold Below Channel"
-
-        suspend fun sendAlertNotifications(notificationService: NotificationService, viewModel: DeviceHealthMetricsViewModel) {
-            viewModel.notificationState.collectLatest {
-                if (it.historicalAlertType != String.DEFAULT
-                    && it.threshold != Int.DEFAULT
-                    && it.value != Int.DEFAULT) {
-
-                    val notificationTitle: String
-                    val notificationText: String
-
-                    if (it.value > it.threshold) {
-                        notificationTitle = "Threshold alert!"
-                        notificationText = "${it.historicalAlertType} has surpassed it's threshold value! Kill unused " +
-                                "applications to conserve resources"
-                        notificationService.showThresholdAlertNotification(notificationTitle, notificationText)
-                    } else {
-                        notificationTitle = "Back to normal"
-                        notificationText = "${it.historicalAlertType} has returned below its threshold value. Your device's" +
-                                "resources are now properly managed"
-                        if (viewModel.uiState.value.shouldShowReverseNotification) {
-                            notificationService.showNormalAlertNotification(
-                                notificationTitle,
-                                notificationText
-                            )
-                        }
-                    }
-                }
-            }
-        }
     }
 }

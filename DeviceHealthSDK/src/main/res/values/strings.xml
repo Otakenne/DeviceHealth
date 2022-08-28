@@ -25,4 +25,10 @@
     <string name="global_ram_usage_threshold">Global RAM Usage Threshold</string>
     <string name="system_cpu_load_threshold">System CPU Load Threshold</string>
     <string name="show_reverse_notification">Show Reverse Notification</string>
+    <string name="threshold_alert">Threshold alert!</string>
+    <string name="notification_text_for_above_threshold">%1$s has surpassed it\'s threshold value! Kill unused applications to conserve resources</string>
+    <string name="back_to_normal">Back to normal</string>
+    <string name="notification_text_for_below_threshold">%1$s has returned below its threshold value. Your device\'s resources are now properly managed</string>
+    <string name="percent">%1$s\%%</string>
+    <string name="historical_alerts">Historical Alerts</string>
 </resources>

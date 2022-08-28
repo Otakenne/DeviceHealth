@@ -4,6 +4,7 @@ import com.otakenne.devicehealthsdk.data.models.HistoricalAlert
 import com.otakenne.devicehealthsdk.data.repositories.ICacheRepository
 import com.otakenne.devicehealthsdk.utility.Constants
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
 
 internal class CacheRepositoryMock: ICacheRepository {
@@ -13,7 +14,9 @@ internal class CacheRepositoryMock: ICacheRepository {
     private var systemCPULoadThreshold: Int = Constants.DEFAULT_VALUE
     private var shouldShowReverseNotification: Boolean = false
 
-    private var historicalAlertsList: MutableList<HistoricalAlert> = mutableListOf()
+    private val fakeFlow = MutableSharedFlow<MutableList<HistoricalAlert>>()
+    suspend fun emit(value: MutableList<HistoricalAlert>) = fakeFlow.emit(value)
+    var historicalAlertsList: MutableList<HistoricalAlert> = mutableListOf()
     private var historicalAlerts: Flow<MutableList<HistoricalAlert>> = flow {
         historicalAlertsList
     }
@@ -71,9 +74,7 @@ internal class CacheRepositoryMock: ICacheRepository {
         refreshFlow()
     }
 
-    override suspend fun getHistoricalAlerts(): Flow<List<HistoricalAlert>> {
-        return historicalAlerts
-    }
+    override suspend fun getHistoricalAlerts() = fakeFlow
 
     override suspend fun deleteAllHistoricalAlerts() {
         historicalAlertsList.clear()
@@ -81,6 +82,7 @@ internal class CacheRepositoryMock: ICacheRepository {
     }
 
     private fun refreshFlow() {
+
         historicalAlerts = flow { historicalAlertsList }
     }
 }

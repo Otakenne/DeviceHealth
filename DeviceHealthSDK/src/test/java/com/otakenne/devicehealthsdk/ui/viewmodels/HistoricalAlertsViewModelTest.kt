@@ -6,11 +6,11 @@ import com.otakenne.devicehealthsdk.data.repositories.ICacheRepository
 import com.otakenne.devicehealthsdk.data.repositories.mock.CacheRepositoryMock
 import com.otakenne.devicehealthsdk.utility.HistoricalAlertFactory
 import com.otakenne.devicehealthsdk.utility.MainCoroutineRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +23,7 @@ internal class HistoricalAlertsViewModelTest {
     val coroutineRule = MainCoroutineRule()
 
     private lateinit var historicalAlertFactory: HistoricalAlertFactory
-    private lateinit var cacheRepository: ICacheRepository
+    private lateinit var cacheRepository: CacheRepositoryMock
     private lateinit var viewModel: HistoricalAlertsViewModel
 
     @Before
@@ -39,9 +39,10 @@ internal class HistoricalAlertsViewModelTest {
         repeat(numberOfInserts) {
             cacheRepository.insertHistoricalAlert(historicalAlertFactory.createHistoricalAlert())
         }
+        assertThat(viewModel.uiState.value.historicalAlerts.size).isEqualTo(0)
         viewModel.getHistoricalAlerts()
-        delay(5000)
-        val list = viewModel.uiState.value
-        assertThat(list).isNotEqualTo(null)
+
+        cacheRepository.emit(cacheRepository.historicalAlertsList)
+        assertThat(viewModel.uiState.value.historicalAlerts.size).isEqualTo(numberOfInserts)
     }
 }

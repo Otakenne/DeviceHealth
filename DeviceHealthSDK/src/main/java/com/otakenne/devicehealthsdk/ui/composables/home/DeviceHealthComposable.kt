@@ -32,7 +32,7 @@ internal fun DeviceHealthComposable(navController: NavController, viewModel: Dev
     val notificationService = NotificationService(LocalContext.current)
 
     coroutineScope.launch {
-        NotificationService.sendAlertNotifications(notificationService, viewModel)
+        notificationService.sendAlertNotifications(notificationService, viewModel)
     }
 
     Column {
@@ -42,15 +42,15 @@ internal fun DeviceHealthComposable(navController: NavController, viewModel: Dev
         Spacer(modifier = Modifier.height(10.dp))
         DeviceSingleMetricCard(
             stringResource(R.string.battery_health),
-            uiState.batteryHealth.toString()
+            uiState.batteryHealth
         )
         DeviceSingleMetricCard(
             stringResource(R.string.global_ram),
-            uiState.globalRamUsage.toString()
+            uiState.globalRamUsage
         )
         DeviceSingleMetricCard(
             stringResource(R.string.system_cpu_load),
-            uiState.systemCPULoad.toString()
+            uiState.systemCPULoad
         )
         Spacer(modifier = Modifier.height(20.dp))
         HistoricalAlertsButton(onClick = { navController.navigate(route = Screen.HistoricalAlertsScreen.route) })
@@ -80,18 +80,24 @@ fun DeviceMetricsScreenHeader(onClickSettings: () -> (Unit)) {
 }
 
 @Composable
-fun DeviceSingleMetricCard(metric: String, value: String) {
+fun DeviceSingleMetricCard(metric: String, value: Int) {
     Card(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(metric, fontWeight = FontWeight.Bold, fontSize = 17.sp)
-            Text(value, fontSize = 17.sp)
+        Column {
+            Row(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(metric, fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                Text(stringResource(R.string.percent, value.toString()), fontSize = 17.sp)
+            }
+            LinearProgressIndicator(
+                progress = (value.toFloat() / 100),
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+            )
         }
     }
 }
@@ -99,16 +105,21 @@ fun DeviceSingleMetricCard(metric: String, value: String) {
 @Composable
 fun HistoricalAlertsButton(onClick: () -> (Unit)) {
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(vertical = 20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedButton(
             onClick = onClick,
             border = BorderStroke(2.dp, Color.Black),
             shape = RoundedCornerShape(50),
-            modifier = Modifier.height(50.dp).width(150.dp)
+            modifier = Modifier
+                .height(50.dp)
+                .width(150.dp)
         ) {
-            Text(text = "Historical Alerts")
+            Text(text = stringResource(R.string.historical_alerts))
         }
     }
 }

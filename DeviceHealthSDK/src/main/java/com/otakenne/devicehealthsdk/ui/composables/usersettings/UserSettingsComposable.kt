@@ -91,7 +91,7 @@ fun SliderThresholdControl(title: String, value: Float, onValueChange: (Float) -
                     modifier = Modifier
                         .padding(10.dp)
                 )
-                Text(text = value.toInt().toString(), modifier = Modifier.padding(10.dp))
+                Text(text = stringResource(R.string.percent, value.toInt().toString()), modifier = Modifier.padding(10.dp))
             }
             Divider(modifier = Modifier.padding(horizontal = 10.dp))
             Row(
