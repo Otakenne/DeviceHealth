@@ -6,6 +6,9 @@ import android.os.BatteryManager
 import com.otakenne.devicehealthsdk.R
 import com.otakenne.devicehealthsdk.data.utility.Result
 
+/***
+ * Get battery health datasource implementation
+ */
 internal class BatteryHealthDataSource (
     private val context: Context
 ): IBatteryHealthDataSource {

@@ -1,6 +1,5 @@
 package com.otakenne.devicehealthsdk.di
 
-import androidx.room.Room
 import com.otakenne.devicehealthsdk.data.datasources.*
 import com.otakenne.devicehealthsdk.data.datasources.BatteryHealthDataSource
 import com.otakenne.devicehealthsdk.data.datasources.GlobalRamUsageDataSource
@@ -8,7 +7,6 @@ import com.otakenne.devicehealthsdk.data.datasources.IBatteryHealthDataSource
 import com.otakenne.devicehealthsdk.data.datasources.IGlobalRamUsageDataSource
 import com.otakenne.devicehealthsdk.data.datasources.ISystemCPULoadDataSource
 import com.otakenne.devicehealthsdk.data.datasources.room.HistoricalAlertsDatabase
-import com.otakenne.devicehealthsdk.data.models.HistoricalAlert
 import com.otakenne.devicehealthsdk.data.repositories.*
 import com.otakenne.devicehealthsdk.data.repositories.BatteryHealthRepository
 import com.otakenne.devicehealthsdk.data.repositories.GlobalRamUsageRepository
@@ -22,16 +20,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val databaseModule = module {
-//    single {
-//        Room.databaseBuilder(
-//            get(),
-//            HistoricalAlertsDatabase::class.java,
-//            HistoricalAlertsDatabase.DATABASE_NAME
-//        ).fallbackToDestructiveMigration().build()
-//    }
-}
-
+/***
+ * Koin module to help with dependency injection
+ */
 val dataSourceModule = module {
     single <IBatteryHealthDataSource> { BatteryHealthDataSource(get()) }
     single <IGlobalRamUsageDataSource> { GlobalRamUsageDataSource(get()) }
@@ -58,7 +49,6 @@ val viewModelModule = module {
 }
 
 val appModules = listOf(
-//    databaseModule,
     dataSourceModule,
     repositoryModule,
     viewModelModule

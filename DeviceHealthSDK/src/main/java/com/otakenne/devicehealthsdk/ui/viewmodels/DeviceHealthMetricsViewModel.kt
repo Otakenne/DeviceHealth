@@ -177,7 +177,7 @@ internal class DeviceHealthMetricsViewModel (
         )
     }
 
-    private fun startPollJob(timeInterval: Long = 5000L): Job {
+    private fun startPollJob(timeInterval: Long = 1000L): Job {
         return viewModelScope.launch {
             while (isActive) {
                 getAllMetrics()

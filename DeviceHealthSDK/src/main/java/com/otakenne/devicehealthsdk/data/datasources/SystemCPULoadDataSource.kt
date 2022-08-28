@@ -5,9 +5,12 @@ import java.io.File
 import java.io.FileFilter
 import java.io.IOException
 import java.io.RandomAccessFile
+import java.lang.Math.ceil
 import java.util.regex.Pattern
 
-
+/***
+ * Get system CPU load datasource implementation (for devices not running Android O+)
+ */
 internal class SystemCPULoadDataSource: ISystemCPULoadDataSource {
     override fun getSystemCPULoadDataSource(): Result<Int> {
 
@@ -18,11 +21,14 @@ internal class SystemCPULoadDataSource: ISystemCPULoadDataSource {
         for (i in 0 until numCores) {
             coreValues[i] = readCore(i) * 100
         }
-        val averageUsageAcrossCores = coreValues.average().toInt()
+        val averageUsageAcrossCores = kotlin.math.ceil(coreValues.average())
 
-        return Result.Success(averageUsageAcrossCores)
+        return Result.Success(averageUsageAcrossCores.toInt())
     }
 
+    /***
+     * Get the number of cores
+     */
     private fun getNumCores(): Int {
         //Private Class to display only CPU devices in the directory listing
         class CpuFilter: FileFilter {
@@ -44,6 +50,9 @@ internal class SystemCPULoadDataSource: ISystemCPULoadDataSource {
         }
     }
 
+    /***
+     * Get's CPU core information
+     */
     private fun readCore(i: Int): Float {
         /*
              * how to calculate multicore

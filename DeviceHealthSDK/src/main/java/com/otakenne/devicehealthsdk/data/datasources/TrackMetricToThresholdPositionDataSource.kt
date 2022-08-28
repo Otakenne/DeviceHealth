@@ -3,6 +3,9 @@ package com.otakenne.devicehealthsdk.data.datasources
 import android.content.Context
 import com.otakenne.devicehealthsdk.R
 
+/***
+ * Stores boolean variables to control the notification flags
+ */
 internal class TrackMetricToThresholdPositionDataSource(
     private val context: Context
 ): ITrackMetricToThresholdPositionDataSource {

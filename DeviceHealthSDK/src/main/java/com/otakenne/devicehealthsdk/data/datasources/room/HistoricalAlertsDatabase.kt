@@ -6,6 +6,9 @@ import com.otakenne.devicehealthsdk.data.models.HistoricalAlert
 import org.w3c.dom.Comment
 import java.util.*
 
+/***
+ * Room Database to store alerts when device metrics cross user defined threshold values
+ */
 @Database(
     entities = [HistoricalAlert::class],
     version = 1,

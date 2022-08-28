@@ -11,6 +11,9 @@ import com.otakenne.devicehealthsdk.data.utility.now
 import com.otakenne.devicehealthsdk.utility.notification.NotificationService
 import org.koin.java.KoinJavaComponent.inject
 
+/***
+ * Worker that allows us to alert the user of metric changes while application is in the background
+ */
 internal class GetMetricsWorker(
     context: Context,
     workerParams: WorkerParameters

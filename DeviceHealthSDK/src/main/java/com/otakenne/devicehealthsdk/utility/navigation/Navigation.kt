@@ -12,6 +12,9 @@ import com.otakenne.devicehealthsdk.ui.viewmodels.HistoricalAlertsViewModel
 import com.otakenne.devicehealthsdk.ui.viewmodels.UserSettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
+/**
+ * Manages the navigation between composables
+ */
 @Composable
 internal fun Navigation() {
     val navController = rememberNavController()
@@ -23,12 +26,12 @@ internal fun Navigation() {
         
         composable(route = Screen.UserSettingsScreen.route) {
             val viewModel = getViewModel<UserSettingsViewModel>()
-            UserSettingsComposable(viewModel = viewModel)
+            UserSettingsComposable(navController = navController, viewModel = viewModel)
         }
         
         composable(route = Screen.HistoricalAlertsScreen.route) {
             val viewModel = getViewModel<HistoricalAlertsViewModel>()
-            HistoricalAlertsComposable(viewModel = viewModel)
+            HistoricalAlertsComposable(navController = navController, viewModel = viewModel)
         }
     }
 }

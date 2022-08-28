@@ -10,4 +10,19 @@
     <string name="battery_health_error_message">Something went wrong with battery health poll</string>
     <string name="historical_alerts_error">An error occurred while fetching historical alerts</string>
     <string name="historical_alerts_empty_message">No alerts have been recorded yet</string>
+    <string name="battery_health">Battery Level</string>
+    <string name="global_ram">Global Ram Usage</string>
+    <string name="system_cpu_load">System CPU Load</string>
+    <string name="settings_button">settings button</string>
+    <string name="metrics">Metrics</string>
+    <string name="back_button">back button</string>
+    <string name="enable_reverse_alerts">Enable reverse alerts?</string>
+    <string name="zero">0</string>
+    <string name="hundred">100</string>
+    <string name="settings">Settings</string>
+    <string name="history">History</string>
+    <string name="battery_level_threshold">Battery Level Threshold</string>
+    <string name="global_ram_usage_threshold">Global RAM Usage Threshold</string>
+    <string name="system_cpu_load_threshold">System CPU Load Threshold</string>
+    <string name="show_reverse_notification">Show Reverse Notification</string>
 </resources>

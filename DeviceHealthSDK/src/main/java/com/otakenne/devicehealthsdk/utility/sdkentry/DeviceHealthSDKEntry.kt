@@ -5,13 +5,32 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.otakenne.devicehealthsdk.di.appModules
 import com.otakenne.devicehealthsdk.ui.activities.DeviceHealthActivity
+import com.otakenne.devicehealthsdk.utility.Constants
 import com.otakenne.devicehealthsdk.utility.notification.NotificationService
+import com.otakenne.devicehealthsdk.utility.worker.GetMetricsWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import java.util.concurrent.TimeUnit
 
+/**
+ * Entry point into the SDK. Also creates notification channels for Android o+
+ */
 object DeviceHealthSDKEntry {
+
+    val workRequest = PeriodicWorkRequestBuilder<GetMetricsWorker>(
+        Constants.WORK_PERIODICITY,
+        TimeUnit.MINUTES
+    ).setConstraints(
+        Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .build()
+    ).build()
 
     fun initialize(context: Context) {
         createAboveNotificationChannel(context)
@@ -20,6 +39,12 @@ object DeviceHealthSDKEntry {
             androidContext(context)
             modules(appModules)
         }
+        WorkManager.getInstance(context)
+            .enqueueUniquePeriodicWork(
+                Constants.UNIQUE_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+            )
     }
 
     fun launchHomeActivity(context: Context) {

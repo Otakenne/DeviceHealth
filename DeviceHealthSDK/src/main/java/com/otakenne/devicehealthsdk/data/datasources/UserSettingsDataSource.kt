@@ -5,6 +5,9 @@ import com.otakenne.devicehealthsdk.R
 import com.otakenne.devicehealthsdk.data.utility.Result
 import javax.inject.Inject
 
+/***
+ * Stores the user threshold and shouldShowReverseNotification settings
+ */
 internal class UserSettingsDataSource (
     private val context: Context
 ): IUserSettingsDataSource {
