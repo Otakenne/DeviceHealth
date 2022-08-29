@@ -31,4 +31,6 @@
     <string name="notification_text_for_below_threshold">%1$s has returned below its threshold value. Your device\'s resources are now properly managed</string>
     <string name="percent">%1$s\%%</string>
     <string name="historical_alerts">Historical Alerts</string>
+    <string name="above_threshold_channel_description">Alerts you when your device metrics cross your predefined threshold values</string>
+    <string name="below_threshold_channel_description">Alerts you when your device metrics return below your predefined threshold values</string>
 </resources>

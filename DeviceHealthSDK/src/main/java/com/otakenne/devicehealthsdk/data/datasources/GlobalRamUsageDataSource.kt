@@ -16,7 +16,6 @@ internal class GlobalRamUsageDataSource (
             val mi = ActivityManager.MemoryInfo()
             val activityManager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager?
             activityManager!!.getMemoryInfo(mi)
-//            val availableMegs: Long = mi.availMem / 0x100000L
             val percentAvail: Double = (mi.availMem / mi.totalMem.toDouble()) * 100.0
             Result.Success((100 - percentAvail.toInt()))
         } catch (exception: Exception) {

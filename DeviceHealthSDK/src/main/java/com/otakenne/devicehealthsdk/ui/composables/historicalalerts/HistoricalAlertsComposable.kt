@@ -8,9 +8,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -19,12 +21,25 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.otakenne.devicehealthsdk.R
 import com.otakenne.devicehealthsdk.data.models.HistoricalAlert
+import com.otakenne.devicehealthsdk.ui.viewmodels.DeviceHealthMetricsViewModel
 import com.otakenne.devicehealthsdk.ui.viewmodels.HistoricalAlertsViewModel
+import com.otakenne.devicehealthsdk.utility.notification.NotificationService
+import kotlinx.coroutines.launch
 
 @Composable
-internal fun HistoricalAlertsComposable(navController: NavController, viewModel: HistoricalAlertsViewModel) {
+internal fun HistoricalAlertsComposable(
+    navController: NavController,
+    viewModel: HistoricalAlertsViewModel,
+    deviceHealthMetricsViewModel: DeviceHealthMetricsViewModel
+) {
     val uiState = viewModel.uiState.collectAsState()
     val historicalAlerts = uiState.value.historicalAlerts
+    val coroutineScope = rememberCoroutineScope()
+    val notificationService = NotificationService(LocalContext.current)
+
+    coroutineScope.launch {
+        notificationService.sendAlertNotifications(notificationService, deviceHealthMetricsViewModel)
+    }
 
     Column {
         HistoricalAlertsScreenHeader(onClickBack = { navController.popBackStack() })

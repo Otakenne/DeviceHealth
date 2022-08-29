@@ -10,21 +10,35 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.otakenne.devicehealthsdk.R
+import com.otakenne.devicehealthsdk.ui.viewmodels.DeviceHealthMetricsViewModel
 import com.otakenne.devicehealthsdk.ui.viewmodels.UserSettingsViewModel
+import com.otakenne.devicehealthsdk.utility.notification.NotificationService
+import kotlinx.coroutines.launch
 
 @Composable
-internal fun UserSettingsComposable(navController: NavController, viewModel: UserSettingsViewModel) {
+internal fun UserSettingsComposable(
+    navController: NavController,
+    viewModel: UserSettingsViewModel,
+    deviceHealthMetricsViewModel: DeviceHealthMetricsViewModel
+) {
     val uiState = viewModel.uiState.collectAsState()
     val batteryHealthThreshold = uiState.value.batteryHealthThreshold.toFloat()
     val globalRamUsageThreshold = uiState.value.globalRamUsageThreshold.toFloat()
     val systemCPULoadThreshold = uiState.value.systemCPULoadThreshold.toFloat()
     val shouldShowReverseNotification = uiState.value.shouldShowReverseNotification
+    val coroutineScope = rememberCoroutineScope()
+    val notificationService = NotificationService(LocalContext.current)
+
+    coroutineScope.launch {
+        notificationService.sendAlertNotifications(notificationService, deviceHealthMetricsViewModel)
+    }
 
     Column {
         UserSettingsScreenHeader(onClickBack = { navController.popBackStack() })

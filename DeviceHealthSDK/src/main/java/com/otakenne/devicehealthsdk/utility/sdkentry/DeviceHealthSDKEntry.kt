@@ -9,6 +9,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.otakenne.devicehealthsdk.R
 import com.otakenne.devicehealthsdk.di.appModules
 import com.otakenne.devicehealthsdk.ui.activities.DeviceHealthActivity
 import com.otakenne.devicehealthsdk.utility.Constants
@@ -19,7 +20,7 @@ import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
 
 /**
- * Entry point into the SDK. Also creates notification channels for Android o+
+ * Entry point into the SDK. Also creates notification channels for Android O+
  */
 object DeviceHealthSDKEntry {
 
@@ -32,6 +33,10 @@ object DeviceHealthSDKEntry {
             .build()
     ).build()
 
+    /**
+     * This method initializes the SDK. Call this method in the application class onCreate method
+     * @param context: Application context
+     */
     fun initialize(context: Context) {
         createAboveNotificationChannel(context)
         createBelowNotificationChannel(context)
@@ -47,6 +52,10 @@ object DeviceHealthSDKEntry {
             )
     }
 
+    /**
+     * This is the entry point to the SDK, call this method from your activity
+     * @param context: Activity context
+     */
     fun launchHomeActivity(context: Context) {
         val intent = Intent(context, DeviceHealthActivity::class.java)
         context.startActivity(intent)
@@ -59,7 +68,7 @@ object DeviceHealthSDKEntry {
                 NotificationService.THRESHOLD_ABOVE_ALERT_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            channel.description = "Alerts you when your device metrics cross your predefined threshold values"
+            channel.description = context.getString(R.string.above_threshold_channel_description)
 
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -73,7 +82,7 @@ object DeviceHealthSDKEntry {
                 NotificationService.THRESHOLD_BELOW_ALERT_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            channel.description = "Alerts you when your device metrics return below your predefined threshold values"
+            channel.description = context.getString(R.string.below_threshold_channel_description)
 
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

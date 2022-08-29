@@ -30,3 +30,11 @@ Notes and constraints
 - Ideally, for user experience reasons, the battery level threshold should work differently from that of the global RAM usage and
   the system CPU load. This is because the user will want to be alerted when their battery level drops below a threshold. However,
   the question did not explicitly state the direction the alert should follow so I chose not to assume.
+
+Efficiency and Battery Optimization
+- While the application is in the foreground, the DeviceMetricsViewModel uses coroutines to poll the required device metrics 
+every second. I decided to use coroutines over a conventional timer as I do not have to worry about memory leaks or freezing
+the UI thread.
+
+- While the application is in the background, I use a WorkManager with battery constraints to poll the device metrics every 16 
+minutes.
